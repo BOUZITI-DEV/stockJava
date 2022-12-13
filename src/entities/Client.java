@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.Objects;
+
 public class Client {
 	private int id;
 	private String nom;
@@ -54,6 +56,41 @@ public class Client {
 
 	@Override
 	public String toString() {
-		return "Client : " + this.nom;
+		return this.nom;
 	}
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 89 * hash + this.id;
+        hash = 89 * hash + Objects.hashCode(this.nom);
+        hash = 89 * hash + Objects.hashCode(this.telephone);
+        hash = 89 * hash + Objects.hashCode(this.email);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Client other = (Client) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (!Objects.equals(this.nom, other.nom)) {
+            return false;
+        }
+        if (!Objects.equals(this.telephone, other.telephone)) {
+            return false;
+        }
+        if (!Objects.equals(this.email, other.email)) {
+            return false;
+        }
+        return true;
+    }
+        
 }

@@ -9,23 +9,29 @@ import java.util.List;
 import connexion.Connexion;
 import dao.IDao;
 import entities.Produit;
+import java.awt.image.BufferedImage;
+import java.sql.Blob;
 
 public class ProduitService implements IDao<Produit> {
 
     private RayonService rServ;
+    private CategorieService cs;
 
     public ProduitService() {
         rServ = new RayonService();
+        cs = new CategorieService();
     }
 
     @Override
     public boolean create(Produit o) {
         try {
-            String req = "INSERT INTO produit VALUES(null, ?, ?, ?)";
+            String req = "INSERT INTO produit VALUES(null, ?, ?, ?, null, ?, ?)";
             PreparedStatement ps = Connexion.getConnection().prepareStatement(req);
             ps.setString(1, o.getDesignation());
             ps.setDouble(2, o.getPrixAchat());
-            ps.setInt(3, o.getRayon().getId());
+            ps.setDouble(3, o.getTva());
+            ps.setInt(4, o.getRayon().getId());
+            ps.setInt(5, o.getCategorie().getId());
             if (ps.executeUpdate() == 1) {
                 return true;
             }
@@ -53,12 +59,14 @@ public class ProduitService implements IDao<Produit> {
     @Override
     public boolean update(Produit o) {
         try {
-            String req = "UPDATE produit SET designation = ? , prixAchat = ?, rayon = ? WHERE id = ?";
+            String req = "UPDATE produit SET designation = ? , prixAchat = ?, TVA = ?, rayon = ?, categorie = ?  WHERE id = ?";
             PreparedStatement ps = Connexion.getConnection().prepareStatement(req);
             ps.setString(1, o.getDesignation());
             ps.setDouble(2, o.getPrixAchat());
-            ps.setInt(3, o.getRayon().getId());
-            ps.setInt(4, o.getId());
+            ps.setDouble(3, o.getTva());
+            ps.setInt(4, o.getRayon().getId());
+            ps.setInt(5, o.getCategorie().getId());
+            ps.setInt(6, o.getId());
             if (ps.executeUpdate() == 1) {
                 return true;
             }
@@ -75,8 +83,8 @@ public class ProduitService implements IDao<Produit> {
             Statement st = Connexion.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {
-                return new Produit(rs.getInt("id"), rs.getString("designation"), rs.getDouble("prixAchat"),
-                        rServ.findById(rs.getInt("rayon")));
+                return new Produit(rs.getInt("id"), rs.getString("designation"), rs.getDouble("prixAchat"), rs.getDouble("TVA"),
+                        rServ.findById(rs.getInt("rayon")), cs.findById(rs.getInt("categorie")));
 
             }
         } catch (SQLException e) {
@@ -93,8 +101,8 @@ public class ProduitService implements IDao<Produit> {
             Statement st = Connexion.getConnection().createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
-                produits.add(new Produit(rs.getInt("id"), rs.getString("designation"), rs.getDouble("prixAchat"),
-                        rServ.findById(rs.getInt("rayon"))));
+                produits.add(new Produit(rs.getInt("id"), rs.getString("designation"), rs.getDouble("prixAchat"), rs.getDouble("TVA"),
+                        rServ.findById(rs.getInt("rayon")), cs.findById(rs.getInt("categorie"))));
             }
         } catch (SQLException e) {
             e.printStackTrace();

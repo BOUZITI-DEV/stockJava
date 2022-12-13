@@ -54,7 +54,7 @@ public class Commande {
 	@Override
 	public String toString() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy");
-		return "Commande : " + code + " / " + sdf.format(date);
+		return code + " | " + sdf.format(date);
 	}
 
 }

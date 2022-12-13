@@ -39,8 +39,12 @@ public class Main extends javax.swing.JFrame {
         copyMenuItem = new javax.swing.JMenuItem();
         pasteMenuItem = new javax.swing.JMenuItem();
         deleteMenuItem = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
 
@@ -85,11 +89,40 @@ public class Main extends javax.swing.JFrame {
         });
         editMenu.add(deleteMenuItem);
 
-        jMenuItem3.setText("Commandes");
-        editMenu.add(jMenuItem3);
+        jMenuItem2.setText("Catégories");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        editMenu.add(jMenuItem2);
 
-        jMenuItem4.setText("Demmandes");
-        editMenu.add(jMenuItem4);
+        jMenu3.setText("Sorties");
+
+        jMenuItem3.setText("Commandes");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem3);
+
+        jMenuItem4.setText("Lignes commandes");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem4);
+
+        editMenu.add(jMenu3);
+
+        jMenu4.setText("Entrées");
+
+        jMenuItem5.setText("Demmandes");
+        jMenu4.add(jMenuItem5);
+
+        editMenu.add(jMenu4);
 
         menuBar.add(editMenu);
 
@@ -144,6 +177,27 @@ public class Main extends javax.swing.JFrame {
         pf.setVisible(true);
     }//GEN-LAST:event_pasteMenuItemActionPerformed
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        CategorieForm cf = new CategorieForm();
+        desktopPane.add(cf);
+        cf.setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        CommandeForm cf = new CommandeForm();
+        desktopPane.add(cf);
+        cf.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        LigneCommandeForm lcf = new LigneCommandeForm();
+        desktopPane.add(lcf);
+        lcf.setVisible(true);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -186,9 +240,13 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem pasteMenuItem;
     // End of variables declaration//GEN-END:variables

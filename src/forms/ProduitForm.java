@@ -5,10 +5,12 @@
  */
 package forms;
 
+import entities.Categorie;
 import entities.Produit;
 import entities.Rayon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import services.CategorieService;
 import services.ProduitService;
 import services.RayonService;
 
@@ -23,6 +25,7 @@ public class ProduitForm extends javax.swing.JInternalFrame {
      */
     private ProduitService ps;
     private RayonService rs;
+    private CategorieService cs;
     private static int id;
     private DefaultTableModel model;
 
@@ -31,21 +34,29 @@ public class ProduitForm extends javax.swing.JInternalFrame {
         this.setTitle("Gestions des produits");
         ps = new ProduitService();
         rs = new RayonService();
-        loadRayon();
+        cs = new CategorieService();
         model = (DefaultTableModel) listProduit.getModel();
+        loadRayon();
+        loadCategorie();
         loadProduit();
     }
 
     public void loadProduit() {
         model.setRowCount(0);
         for (Produit p : ps.findAll()) {
-            model.addRow(new Object[]{p.getId(), p.getDesignation(), p.getPrixAchat(), p.getRayon()});
+            model.addRow(new Object[]{p.getId(), p.getDesignation(), p.getPrixAchat(), p.getTva(), p.getRayon(), p.getCategorie()});
         }
     }
 
     public void loadRayon() {
         for (Rayon r : rs.findAll()) {
             listRayon.addItem(r);
+        }
+    }
+
+    public void loadCategorie() {
+        for (Categorie c : cs.findAll()) {
+            listCategorie.addItem(c);
         }
     }
 
@@ -68,6 +79,11 @@ public class ProduitForm extends javax.swing.JInternalFrame {
         btnModifer = new javax.swing.JButton();
         btnSupprimer = new javax.swing.JButton();
         listRayon = new javax.swing.JComboBox();
+        jLabel4 = new javax.swing.JLabel();
+        txtTva = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        listCategorie = new javax.swing.JComboBox();
+        jLabel6 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         listProduit = new javax.swing.JTable();
@@ -106,6 +122,12 @@ public class ProduitForm extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel4.setText("TVA");
+
+        jLabel5.setText("Catégorie");
+
+        jLabel6.setText("Photo");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -115,17 +137,27 @@ public class ProduitForm extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel5))
                 .addGap(42, 42, 42)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtDesignation)
-                    .addComponent(txtPrixAchat)
-                    .addComponent(listRayon, 0, 204, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSupprimer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnModifer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAjouter, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtTva)
+                            .addComponent(txtDesignation, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+                            .addComponent(txtPrixAchat))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnModifer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAjouter, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSupprimer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(listRayon, 0, 204, Short.MAX_VALUE)
+                            .addComponent(listCategorie, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -143,10 +175,22 @@ public class ProduitForm extends javax.swing.JInternalFrame {
                     .addComponent(btnModifer))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
                     .addComponent(btnSupprimer)
-                    .addComponent(listRayon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel4)
+                    .addComponent(txtTva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(24, 24, 24)
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel5))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(listRayon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(listCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Liste des produits"));
@@ -156,7 +200,7 @@ public class ProduitForm extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Id", "Désignation", "Prix d'achat", "Rayon"
+                "Id", "Désignation", "Prix d'achat", "TVA", "Rayon", "Catégorie"
             }
         ));
         listProduit.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -172,15 +216,15 @@ public class ProduitForm extends javax.swing.JInternalFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 943, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -188,17 +232,18 @@ public class ProduitForm extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 572, Short.MAX_VALUE)))
+                .addGap(22, 22, 22)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -211,15 +256,21 @@ public class ProduitForm extends javax.swing.JInternalFrame {
         id = Integer.parseInt(model.getValueAt(listProduit.getSelectedRow(), 0).toString());
         txtDesignation.setText(model.getValueAt(listProduit.getSelectedRow(), 1).toString());
         txtPrixAchat.setText(model.getValueAt(listProduit.getSelectedRow(), 2).toString());
-        listRayon.setSelectedItem((Rayon) model.getValueAt(listProduit.getSelectedRow(), 3));
+        txtTva.setText(model.getValueAt(listProduit.getSelectedRow(), 3).toString());
+        listRayon.setSelectedItem((Rayon) model.getValueAt(listProduit.getSelectedRow(), 4));
+        listCategorie.setSelectedItem((Categorie) model.getValueAt(listProduit.getSelectedRow(), 5));
+
     }//GEN-LAST:event_listProduitMouseClicked
 
     private void btnAjouterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAjouterActionPerformed
         // TODO add your handling code here:
         String designation = txtDesignation.getText();
-        Double prixAchat = Double.parseDouble(txtPrixAchat.getText());
+        double prixAchat = Double.parseDouble(txtPrixAchat.getText());
+        double tva = Double.parseDouble(txtTva.getText());
         Rayon rayon = (Rayon) listRayon.getSelectedItem();
-        if (ps.create(new Produit(designation, prixAchat, rayon))) {
+        Categorie categorie = (Categorie) listCategorie.getSelectedItem();
+
+        if (ps.create(new Produit(designation, prixAchat, tva, rayon, categorie))) {
             loadProduit();
             JOptionPane.showMessageDialog(this, "Succès !");
         }
@@ -244,8 +295,10 @@ public class ProduitForm extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         String designation = txtDesignation.getText();
         double prixAchat = Double.parseDouble(txtPrixAchat.getText());
+        double tva = Double.parseDouble(txtTva.getText());
         Rayon rayon = (Rayon) listRayon.getSelectedItem();
-        if (ps.update(new Produit(id, designation, prixAchat, rayon))) {
+        Categorie categorie = (Categorie) listCategorie.getSelectedItem();
+        if (ps.update(new Produit(id, designation, prixAchat, tva, rayon, categorie))) {
             loadProduit();
             JOptionPane.showMessageDialog(this, "Succès !");
         }
@@ -259,12 +312,17 @@ public class ProduitForm extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JComboBox listCategorie;
     private javax.swing.JTable listProduit;
     private javax.swing.JComboBox listRayon;
     private javax.swing.JTextField txtDesignation;
     private javax.swing.JTextField txtPrixAchat;
+    private javax.swing.JTextField txtTva;
     // End of variables declaration//GEN-END:variables
 }
