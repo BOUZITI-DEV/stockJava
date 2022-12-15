@@ -38,11 +38,11 @@ public class LigneDemande {
 		this.quantite = quantite;
 	}
 
-	public double getprixVente() {
+	public double getPrixVente() {
 		return prixVente;
 	}
 
-	public void setprixVente(double prixVente) {
+	public void setPrixVente(double prixVente) {
 		this.prixVente = prixVente;
 	}
 

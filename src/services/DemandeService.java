@@ -23,10 +23,10 @@ public class DemandeService implements IDao<Demande> {
 	@Override
 	public boolean create(Demande o) {
 		try {
-			String req = "INSERT INTO demmande VALUES(null, ?, ?)";
+			String req = "INSERT INTO demande VALUES(null, ?, ?)";
 			PreparedStatement ps = Connexion.getConnection().prepareStatement(req);
 			ps.setDate(1, new Date(o.getDate().getTime()));
-			ps.setObject(2, o.getFournisseur());
+			ps.setInt(2, o.getFournisseur().getId());
 			if (ps.executeUpdate() == 1)
 				return true;
 		} catch (SQLException e) {
@@ -38,7 +38,7 @@ public class DemandeService implements IDao<Demande> {
 	@Override
 	public boolean delete(Demande o) {
 		try {
-			String req = "DELETE FROM demmande WHERE code = ?";
+			String req = "DELETE FROM demande WHERE code = ?";
 			PreparedStatement ps = Connexion.getConnection().prepareStatement(req);
 			ps.setInt(1, o.getCode());
 			if (ps.executeUpdate() == 1)
@@ -55,7 +55,7 @@ public class DemandeService implements IDao<Demande> {
 			String req = "UPDATE demande SET date = ? , fournisseur = ? WHERE code = ?";
 			PreparedStatement ps = Connexion.getConnection().prepareStatement(req);
 			ps.setDate(1, new Date(o.getDate().getTime()));
-			ps.setObject(2, o.getFournisseur());
+			ps.setInt(2, o.getFournisseur().getId());
 			ps.setInt(3, o.getCode());
 			if (ps.executeUpdate() == 1)
 				return true;
@@ -68,7 +68,7 @@ public class DemandeService implements IDao<Demande> {
 	@Override
 	public Demande findById(int code) {
 		try {
-			String sql = "SELECT * FROM demmande WHERE code = " + code;
+			String sql = "SELECT * FROM demande WHERE code = " + code;
 			Statement st = Connexion.getConnection().createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			if (rs.next()) {
@@ -100,7 +100,7 @@ public class DemandeService implements IDao<Demande> {
 	public double getTotalPrix(int code) {
 		double total = 0;
 		for (LigneDemande lc : findById(code).getLigneDemandes()) {
-			total += lc.getprixVente() * lc.getQuantite();
+			total += lc.getPrixVente() * lc.getQuantite();
 		}
 		return total;
 	}
